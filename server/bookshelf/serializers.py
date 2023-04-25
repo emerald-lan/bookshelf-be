@@ -1,11 +1,10 @@
-from django.contrib.auth.models import User
 from rest_framework import serializers
-from .models import Book
+from .models import User, Book
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
 	class Meta:
 		model = User
-		fields = ['id', 'url', 'username', 'email', 'password', 'is_active', 'is_superuser']
+		fields = ['url', 'id', 'is_superuser', 'username', 'email', 'password', 'avatar', 'is_active']
 
 class BookSerializer(serializers.HyperlinkedModelSerializer):
 	id = serializers.IntegerField(read_only=True)

@@ -1,8 +1,7 @@
-from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework import permissions
 from .serializers import UserSerializer, BookSerializer
-from .models import Book
+from .models import User, Book
 
 class UserViewSet(viewsets.ModelViewSet):
 	queryset = User.objects.all()
