@@ -17,14 +17,17 @@ class User(AbstractUser):
 class Book(models.Model):
     title = models.CharField(max_length=100, unique=True)
     author = models.CharField(max_length=100)
-    genre = models.CharField(max_length=100)
-    published_year = models.PositiveIntegerField()
-    summary = models.TextField()
-    image = models.ImageField(upload_to='images/books/')
-    price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField()
+    category = models.CharField(max_length=30)
+    published_year = models.PositiveIntegerField(blank=True, null=True)
+    summary = models.TextField(blank=True, null=True)
+    cover = models.ImageField(upload_to='images/books/', blank=True, null=True)
+    unit_price = models.PositiveIntegerField(blank=True, default=0)
+    stock = models.PositiveIntegerField(blank=True, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ('id', 'title', 'author', 'category', 'published_year', 'unit_price', 'stock', 'created_at', 'updated_at')
 
     def __str__(self):
         return self.title
