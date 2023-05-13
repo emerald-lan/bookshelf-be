@@ -10,22 +10,8 @@ class User(AbstractUser):
     avatar = models.ImageField(upload_to='images/users/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
 
-    class Meta:
-        ordering = ('id', 'is_superuser', 'username', 'email', 'is_active')
-
     def __str__(self):
         return self.username
-    
-class Admin(User):
-    class Meta:
-        proxy = True
-
-    def __str__(self):
-        return self.username
-
-    def save(self, *args, **kwargs):
-        self.is_superuser = True
-        super().save(*args, **kwargs)
 
 class Book(models.Model):
     id = models.AutoField(primary_key=True)
@@ -39,9 +25,6 @@ class Book(models.Model):
     stock = models.PositiveIntegerField(blank=True, default=0)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        ordering = ('id', 'title', 'author', 'category', 'published_year', 'unit_price', 'stock', 'created_at', 'updated_at')
 
     def __str__(self):
         return self.title
