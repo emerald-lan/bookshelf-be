@@ -3,7 +3,7 @@ from bookshelf.serializers import UserSerializer, BookSerializer, OrderSerialize
 from .models import User, Book, Order, OrderItem, Cart, Wishlist
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all().order_by('-date_joined')
+    queryset = User.objects.all()
     serializer_class = UserSerializer
     permission_classes = [permissions.IsAuthenticated]
 

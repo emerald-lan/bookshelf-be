@@ -9,7 +9,7 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bookshelf', '0003_alter_book_image'),
+        ('bookshelf', '0004_alter_book_options_remove_book_genre_and_more'),
     ]
 
     operations = [
