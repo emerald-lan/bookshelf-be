@@ -31,8 +31,8 @@ class Book(models.Model):
     
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
-    customer_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
-    admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='approved_orders', null=True)
+    customer_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders',to_field='id')
+    admin_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='approved_orders', null=True,to_field='id')
     customer_name = models.CharField(max_length=100)
     customer_number = models.CharField(max_length=20)
     customer_address = models.CharField(max_length=200)
@@ -44,7 +44,7 @@ class Order(models.Model):
 
 class OrderItem(models.Model):
     id = models.AutoField(primary_key=True)
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items',to_field='id')
     book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField()
     multi_unit_price = models.PositiveIntegerField()
@@ -53,8 +53,8 @@ class OrderItem(models.Model):
     
 class Cart(models.Model):
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts')
-    book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='carts',to_field='id')
+    book_id = models.ForeignKey(Book, on_delete=models.CASCADE,to_field='id')
     quantity = models.PositiveIntegerField()
     multi_unit_price = models.PositiveIntegerField()
     
@@ -64,8 +64,8 @@ class Cart(models.Model):
 
 class Wishlist(models.Model):
     id = models.AutoField(primary_key=True)
-    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlists')
-    book_id = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='wishlists',to_field='id')
+    book_id = models.ForeignKey(Book, on_delete=models.CASCADE,to_field='id')
 
     def __str__(self):
         return f"Wishlist {self.id} - User {self.user_id.username} - Book {self.book_id.title}"
