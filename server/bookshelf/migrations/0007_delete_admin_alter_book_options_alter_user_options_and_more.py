@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bookshelf', '0005_order_admin_alter_book_id_alter_user_id_wishlist_and_more'),
+        ('bookshelf', '0006_order_admin_alter_book_id_alter_user_id_wishlist_and_more'),
     ]
 
     operations = [

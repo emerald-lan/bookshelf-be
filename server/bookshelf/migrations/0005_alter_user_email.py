@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bookshelf', '0005_merge_20230513_2145'),
+        ('bookshelf', '0004_alter_book_options_remove_book_genre_and_more'),
     ]
 
     operations = [
