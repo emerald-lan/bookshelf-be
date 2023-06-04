@@ -4,7 +4,7 @@ from .models import User, Book, Order, OrderItem
 class UserSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = User
-        fields = ['url', 'id', 'is_superuser', 'username', 'email', 'password', 'avatar','phone_number', 'address', 'is_active']
+        fields = ['url', 'id', 'is_superuser', 'username', 'email', 'password', 'avatar', 'phone_number', 'address', 'is_active']
 
 class BookSerializer(serializers.HyperlinkedModelSerializer):
     id = serializers.IntegerField(read_only=True)

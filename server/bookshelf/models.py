@@ -9,7 +9,7 @@ class User(AbstractUser):
     email = models.EmailField(validators=[EmailValidator()], blank=False, null=False)
     avatar = models.ImageField(upload_to='images/users/', blank=True, null=True)
     is_active = models.BooleanField(default=True)
-    phone_number = models.CharField(max_length=15, validators=[MinLengthValidator(10), MaxLengthValidator(15)], blank=False, null=True)
+    phone_number = models.CharField(max_length=15, validators=[MinLengthValidator(10), MaxLengthValidator(15)], blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
 
     def __str__(self):

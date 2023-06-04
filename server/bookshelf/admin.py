@@ -3,7 +3,7 @@ from .models import *
 
 @admin.register(User)
 class UserAdmin(admin.ModelAdmin):
-    list_display = ['id', 'is_superuser', 'username', 'email', 'password', 'avatar','phone_number', 'address', 'is_active']
+    list_display = ['id', 'is_superuser', 'username', 'email', 'password', 'avatar', 'phone_number', 'address', 'is_active']
     
 
 @admin.register(Book)

@@ -7,50 +7,10 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('bookshelf', '0007_delete_admin_alter_book_options_alter_user_options_and_more'),
+        ('bookshelf', '0001_initial'),
     ]
 
     operations = [
-        migrations.RemoveField(
-            model_name='wishlist',
-            name='book_id',
-        ),
-        migrations.RemoveField(
-            model_name='wishlist',
-            name='user_id',
-        ),
-        migrations.RemoveField(
-            model_name='book',
-            name='created_at',
-        ),
-        migrations.RemoveField(
-            model_name='book',
-            name='updated_at',
-        ),
-        migrations.RemoveField(
-            model_name='order',
-            name='admin_id',
-        ),
-        migrations.RemoveField(
-            model_name='order',
-            name='customer_address',
-        ),
-        migrations.RemoveField(
-            model_name='order',
-            name='customer_name',
-        ),
-        migrations.RemoveField(
-            model_name='order',
-            name='customer_number',
-        ),
-        migrations.RemoveField(
-            model_name='order',
-            name='status',
-        ),
-        migrations.RemoveField(
-            model_name='orderitem',
-            name='multi_unit_price',
-        ),
         migrations.AddField(
             model_name='user',
             name='address',
@@ -70,11 +30,5 @@ class Migration(migrations.Migration):
             model_name='user',
             name='username',
             field=models.CharField(max_length=50, unique=True),
-        ),
-        migrations.DeleteModel(
-            name='Cart',
-        ),
-        migrations.DeleteModel(
-            name='Wishlist',
         ),
     ]
