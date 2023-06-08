@@ -1,12 +1,13 @@
 from rest_framework import viewsets, permissions
-from rest_framework.generics import RetrieveAPIView, CreateAPIView
-from bookshelf.serializers import *
-from .models import *
+from bookshelf.serializers import UserSerializer, BookSerializer, OrderSerializer, OrderItemSerializer
+from .models import User, Book, Order, OrderItem
+from rest_framework.response import Response
+from rest_framework import status
 
 class UserViewSet(viewsets.ModelViewSet):
-    queryset = User.objects.all()
+    queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
@@ -23,23 +24,3 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class CartViewSet(viewsets.ModelViewSet):
-    queryset = Cart.objects.all()
-    serializer_class = CartSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-class WishlistViewSet(viewsets.ModelViewSet):
-    queryset = Wishlist.objects.all()
-    serializer_class = WishlistSerializer
-    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
-class UserAPIView(RetrieveAPIView):
-    permission_classes = [permissions.IsAuthenticated]
-    serializer_class = UserSerializer
-    
-    def get_object(self):
-        return self.request.user
-    
-class RegisterUserAPIView(CreateAPIView):
-	permission_classes = [permissions.AllowAny]
-	serializer_class = RegisterUserSerializer
