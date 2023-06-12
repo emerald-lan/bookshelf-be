@@ -101,47 +101,57 @@ class UserViewSet(viewsets.ModelViewSet):
         else:
             return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    # Update a user
-    # PUT /api/users/{id}/
-    def update(self, request, pk=None):
-        # Admin can update any user
-        if (self.request.user.is_superuser):
-            instance = User.objects.filter(id=pk).first()
-            serializer = self.serializer_class(instance=instance,
-                                                data=request.data,
-                                                )
-        
-        # User can only update their own information
-        elif (self.request.user.id != int(pk)):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+    # # Update a user
+    # # PUT /api/users/{id}/
+    # def update(self, request, pk=None):
+    #     # Admin can update any user
+    #     if (self.request.user.is_superuser):
+    #         instance = User.objects.filter(id=pk).first()
+    #         serializer = self.serializer_class(instance=instance,
+    #                                             data=request.data,
+    #                                             partial=True
+    #                                             )
+    #         data = request.data.copy()
+    #         print(data)
+    #         is_superuser = data.pop('is_superuser', instance.is_superuser)
+    #         print(is_superuser)
 
-        else:
-            instance = self.request.user
-            serializer = self.serializer_class(instance=instance,
-                                                data=request.data,
-                                                )
         
-        if serializer.is_valid():
-            serializer.save()
-            return Response(data=serializer.data, status=status.HTTP_200_OK)
-        else:
-            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    #     # User can only update their own information
+    #     elif (self.request.user.id != int(pk)):
+    #         return Response(status=status.HTTP_401_UNAUTHORIZED)
 
-    # Delete a user
-    # DELETE /api/users/{id}/
-    def destroy(self, request, pk=None):
-        # Admin can delete any user
-        if (self.request.user.is_superuser):
-            instance = User.objects.filter(id=pk).first()
+    #     else:
+    #         instance = self.request.user
+    #         serializer = self.serializer_class(instance=instance,
+    #                                             data=request.data,
+    #                                             partial=True
+    #                                             )
         
-        # User can only delete their own information
-        elif (self.request.user.id != int(pk)):
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
-        else:
-            instance = self.get_object()
+    #     if serializer.is_valid():
+    #         user = serializer.save()
+    #         if self.request.user.is_superuser:
+    #             user.is_superuser = is_superuser
+    #             user.save()
+    #         return Response(data=serializer.data, status=status.HTTP_200_OK)
+    #     else:
+    #         return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-        instance.delete()
-        return Response(status=status.HTTP_200_OK)
+    # # Delete a user
+    # # DELETE /api/users/{id}/
+    # def destroy(self, request, pk=None):
+    #     # Admin can delete any user
+    #     if (self.request.user.is_superuser):
+    #         instance = User.objects.filter(id=pk).first()
+        
+    #     # User can only delete their own information
+    #     elif (self.request.user.id != int(pk)):
+    #         return Response(status=status.HTTP_401_UNAUTHORIZED)
+    #     else:
+    #         instance = self.get_object()
+
+    #     instance.delete()
+    #     return Response(status=status.HTTP_200_OK)
 
 
 class BookViewSet(viewsets.ModelViewSet):
