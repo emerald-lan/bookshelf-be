@@ -31,8 +31,8 @@ class RegisterView(generics.GenericAPIView):
             current_site = get_current_site(request)
             email_subject = "Confirm your Bookshelf Login!!"
             message = render_to_string('email_confirmation.html', {
-                'name': user.first_name,
                 'domain': current_site.domain,
+                'domain': 'localhost:3000',
                 'uid': urlsafe_base64_encode(force_bytes(user.pk)),
                 'token': default_token_generator.make_token(user)
             })
@@ -97,8 +97,8 @@ class LogoutView(generics.GenericAPIView):
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    authentication_classes=[authentication.TokenAuthentication]
-    permission_classes = [permissions.IsAdminUser]
+    authentication_classes=[authentication.TokenAuthentication, authentication.SessionAuthentication]
+    permission_classes = [permissions.IsAuthenticated]
 
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
@@ -114,3 +114,20 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     queryset = OrderItem.objects.all()
     serializer_class = OrderItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+class PlaceOrderView(generics.GenericAPIView):
+    serializer_class = OrderItemSerializer
+    authentication_classes = [authentication.TokenAuthentication]
+
+    def post(self, request):
+        user_id = self.request.user.id
+        order_items = self.request.data['order_items']
+
+        serializer = Order
+
+        if serializer.is_valid():
+            order = serializer.save()
+            messages.success(request, "Your Order has been placed successfully!!")
+            return Response({"success": "Your Order has been placed successfully!!"}, status=status.HTTP_200_OK)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
