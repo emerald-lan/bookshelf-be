@@ -21,6 +21,9 @@ urlpatterns = [
     # path('api/token/refresh/', jwt_views.TokenRefreshView.as_view(), name='token_refresh'),
     path('api/register/', views.RegisterView.as_view(), name='auth_register'),
     path('verify/<uidb64>/<token>', views.VerifyEmailView.as_view(), name='verify'),
+    path('api/login/', views.LoginView.as_view(), name='login'),
+    path('api/logout/', views.LogoutView.as_view(), name='logout'),
+
 ]
 
 if settings.DEBUG:

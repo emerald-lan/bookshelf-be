@@ -5,10 +5,10 @@ from django.core.validators import EmailValidator, MaxLengthValidator, MinLength
 class User(AbstractUser):
     id = models.AutoField(primary_key=True)
     is_superuser = models.BooleanField(default=False)
-    username = models.CharField(max_length=50, unique=True, blank=False, null=False)
-    email = models.EmailField(validators=[EmailValidator()], blank=False, null=False)
+    username = models.CharField(max_length=20, unique=True, blank=False, null=False)
+    email = models.EmailField(validators=[EmailValidator()], blank=False, null=False, unique=True)
     avatar = models.ImageField(upload_to='images/users/', blank=True, null=True)
-    is_active = models.BooleanField(default=True)
+    is_active = models.BooleanField(default=False)
     phone_number = models.CharField(max_length=15, validators=[MinLengthValidator(10), MaxLengthValidator(15)], blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
 
