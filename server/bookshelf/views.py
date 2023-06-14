@@ -25,8 +25,8 @@ class RegisterView(generics.GenericAPIView):
         if serializer.is_valid():
             user = serializer.save()
             messages.success(request, "Your Account has been created succesfully!! Please check your email to confirm your email address in order to activate your account.")
-                # token = Token.objects.create(user=user)
-                # print(token.key)
+            token = Token.objects.create(user=user)
+            print(token.key)
             # Send email confirmation
             current_site = get_current_site(request)
             email_subject = "Confirm your Bookshelf Login!!"
