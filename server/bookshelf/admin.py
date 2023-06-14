@@ -12,8 +12,8 @@ class BookAdmin(admin.ModelAdmin):
 
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
-    list_display = ['id', 'customer_id', 'total']
+    list_display = ['id', 'customer', 'total']
 
 @admin.register(OrderItem)
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['id', 'order_id', 'book_id', 'quantity']
+    list_display = ['id', 'order', 'book', 'quantity']

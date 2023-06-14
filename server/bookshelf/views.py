@@ -15,8 +15,6 @@ from django.contrib.auth.tokens import default_token_generator
 from rest_framework.decorators import api_view
 from rest_framework.authtoken.models import Token
 
-
-
 class RegisterView(generics.GenericAPIView):
     serializer_class = UserSerializer
 
@@ -100,10 +98,31 @@ class UserViewSet(viewsets.ModelViewSet):
     authentication_classes=[authentication.TokenAuthentication, authentication.SessionAuthentication]
     permission_classes = [permissions.IsAuthenticated]
 
+    # Create a user or users
+    # POST /api/users/
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
 class BookViewSet(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer 
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
+    # Create a book or books
+    # POST /api/books/
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data, many=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response(data=serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 class OrderViewSet(viewsets.ModelViewSet):
     queryset = Order.objects.all()
@@ -115,19 +134,23 @@ class OrderItemViewSet(viewsets.ModelViewSet):
     serializer_class = OrderItemSerializer
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
-class PlaceOrderView(generics.GenericAPIView):
-    serializer_class = OrderItemSerializer
+class CheckoutView(generics.GenericAPIView):
     authentication_classes = [authentication.TokenAuthentication]
 
     def post(self, request):
-        user_id = self.request.user.id
-        order_items = self.request.data['order_items']
-
-        serializer = Order
-
-        if serializer.is_valid():
-            order = serializer.save()
-            messages.success(request, "Your Order has been placed successfully!!")
-            return Response({"success": "Your Order has been placed successfully!!"}, status=status.HTTP_200_OK)
+        # print(request.data)
+        user = User.objects.get(id=request.data['user_id'])
+        order = Order.objects.create(customer=user, total=request.data['total'])
+        
+        if order:
+            for index, item in enumerate(request.data['order_items']):
+                book = Book.objects.get(id=item)
+                order_item = OrderItem.objects.create(order=order, book=book, quantity=request.data['quantity'][index])
+                if order_item:
+                    book.stock -= int(request.data['quantity'][index])
+                    book.save()
+                else:
+                    return Response({"success": "Your Order has been placed successfully!!"}, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "Book not found!"}, status=status.HTTP_201_CREATED)
         else:
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return Response({"error": "User not found!"}, status=status.HTTP_400_BAD_REQUEST)

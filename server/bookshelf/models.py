@@ -8,7 +8,7 @@ class User(AbstractUser):
     username = models.CharField(max_length=20, unique=True, blank=False, null=False)
     email = models.EmailField(validators=[EmailValidator()], blank=False, null=False, unique=True)
     avatar = models.ImageField(upload_to='images/users/', blank=True, null=True)
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
     phone_number = models.CharField(max_length=15, validators=[MinLengthValidator(10), MaxLengthValidator(15)], blank=True, null=True)
     address = models.CharField(max_length=200, blank=True, null=True)
 
@@ -31,17 +31,18 @@ class Book(models.Model):
 
 class Order(models.Model):
     id = models.AutoField(primary_key=True)
-    customer_id = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders', to_field='id')
-    total = models.PositiveIntegerField()
+    customer = models.ForeignKey(User, on_delete=models.CASCADE, related_name='orders')
+    total = models.PositiveIntegerField(blank=True, default=0)
 
     def __str__(self):
-        return f"Order {self.id} - Customer {self.customer_id.username}"
+        return f"Order {self.id} - Customer {self.customer.username}"
 
 class OrderItem(models.Model):
     id = models.AutoField(primary_key=True)
-    order_id = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items', to_field='id')
-    book_id = models.ForeignKey(Book, on_delete=models.CASCADE, to_field='id')
-    quantity = models.PositiveIntegerField()
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='items')
+    book = models.ForeignKey(Book, on_delete=models.CASCADE, related_name='items')
+    quantity = models.PositiveIntegerField(blank=True, default=0)
+
 
     def __str__(self):
-        return f"Order Item {self.id} - Order {self.order_id.id} - Book {self.book_id.title}"
+        return f"Order Item {self.id} - Order {self.order.id} - Book {self.book.id}"
