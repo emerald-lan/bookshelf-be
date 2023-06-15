@@ -1,0 +1,17 @@
+Thank you for ordering from us. Here is the detailed information of your order.
+
+Order no. {{ order.id }}
+Customer name: {{ order.customer.first_name }} {{ order.customer.last_name }}
+Phone number: {{ order.customer.phone_number }}
+Address: {{ order.customer.address }}
+
+================================================
+{% for item in order_items %}
+Item: {{ item.book.title }}
+Quantity: {{ item.quantity }}
+Unit price: {{ item.book.unit_price }}
+Subtotal price: {% widthratio item.book.unit_price 1 item.book.unit_price %}
+{% endfor %}
+================================================
+
+Total price: {{ order.total }}

@@ -24,6 +24,7 @@ urlpatterns = [
     path('api/login/', views.LoginView.as_view(), name='login'),
     path('api/logout/', views.LogoutView.as_view(), name='logout'),
     path('api/checkout/', views.CheckoutView.as_view(), name='checkout'),
+    # path('purchases/', views.PurchaseList.as_view(), name='purchase-list'),
 ]
 
 if settings.DEBUG:
