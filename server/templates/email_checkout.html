@@ -10,7 +10,6 @@ Address: {{ order.customer.address }}
 Item: {{ item.book.title }}
 Quantity: {{ item.quantity }}
 Unit price: {{ item.book.unit_price }}
-Subtotal price: {% widthratio item.book.unit_price 1 item.book.unit_price %}
 {% endfor %}
 ================================================
 
